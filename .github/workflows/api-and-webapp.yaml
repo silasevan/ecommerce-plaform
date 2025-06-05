@@ -11,10 +11,6 @@ jobs:
     name: API – Install, Test
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./api
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,18 +22,16 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./api
 
       - name: Run tests
         run: npm test
+        working-directory: ./api
 
   webapp:
     name: WebApp – Install, Test, Build
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./webapp
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -49,9 +43,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./webapp
 
       - name: Run tests
         run: npm test --if-present
+        working-directory: ./webapp
 
       - name: Build the app
         run: npm run build
+        working-directory: ./webapp
