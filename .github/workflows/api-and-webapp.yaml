@@ -8,47 +8,56 @@ on:
 
 jobs:
   api:
-    name: API – Install, Test
+    name: API – Install, Test, Build Docker Image
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./api
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./api
 
       - name: Run tests
         run: npm test
-        working-directory: ./api
+
+      - name: Build Docker image
+        run: docker build -t ecommerce-api .
 
   webapp:
-    name: WebApp – Install, Test, Build
+    name: WebApp – Install, Test, Build Docker Image
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./webapp
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./webapp
 
       - name: Run tests
-        run: npm test -- --passWithNoTests
-        working-directory: ./webapp
+        run: est -- --passWithNoTests
 
       - name: Build the app
         run: npm run build
-        working-directory: ./webapp
+
+      - name: Build Docker image
+        run: docker build -t ecommerce-webapp .
